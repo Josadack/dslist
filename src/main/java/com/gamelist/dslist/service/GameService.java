@@ -3,6 +3,7 @@ package com.gamelist.dslist.service;
 import com.gamelist.dslist.dto.GameDTO;
 import com.gamelist.dslist.dto.GameMinDTO;
 import com.gamelist.dslist.entities.Game;
+import com.gamelist.dslist.projections.GameMinProjection;
 import com.gamelist.dslist.repositories.GameRepository;
 import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
@@ -28,6 +29,12 @@ public class GameService {
     @Transactional
     public List<GameMinDTO> findAll(){
         List<Game> result = gameRepository.findAll();
+        return result.stream().map(x -> new GameMinDTO(x)).toList();
+    }
+
+    @Transactional
+    public List<GameMinDTO> findByList(Long listId){
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
         return result.stream().map(x -> new GameMinDTO(x)).toList();
     }
 }
